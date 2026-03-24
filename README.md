@@ -33,7 +33,7 @@ and then hot-loads the plugin into the sidebar.
 Install as a Pi package:
 
 ```bash
-pi install npm:@sero-ai/plugin-research
+pi install git:https://github.com/monobyte/sero-research-plugin.git
 ```
 
 The agent gains a `research` tool (plan, approve, status, cancel, analyze) and
