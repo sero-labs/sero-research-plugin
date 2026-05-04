@@ -70,7 +70,7 @@ export async function writeSkeletonFile(filePath: string, content: string): Prom
 
 /**
  * Reconcile persisted research state with the actual files on disk.
- * Call on session_start / session_switch so stale "running" sessions
+ * Call on session_start / session_tree so stale "running" sessions
  * are correctly finalized or marked as incomplete.
  *
  * Returns true if the state was modified (caller should persist).
