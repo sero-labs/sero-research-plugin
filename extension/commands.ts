@@ -2,7 +2,7 @@
  * CLI commands for the research orchestrator (/research, /analyze).
  */
 
-import type { ExtensionAPI } from '@mariozechner/pi-coding-agent';
+import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 
 export function registerCommands(pi: ExtensionAPI): void {
   // ── Command: /research ─────────────────────────────────────

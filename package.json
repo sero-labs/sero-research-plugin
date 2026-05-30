@@ -1,7 +1,7 @@
 {
   "name": "@sero-ai/plugin-research",
   "version": "0.1.0",
-  "description": "Multi-agent research orchestrator for Sero — decompose questions into parallel workstreams, monitor progress, and synthesize results",
+  "description": "Multi-agent research orchestrator for Sero \u2014 decompose questions into parallel workstreams, monitor progress, and synthesize results",
   "keywords": [
     "pi-package"
   ],
@@ -43,10 +43,10 @@
     "typebox": "^1.1.37"
   },
   "peerDependencies": {
-    "@mariozechner/pi-agent-core": ">=0.72.1",
-    "@mariozechner/pi-ai": ">=0.72.1",
-    "@mariozechner/pi-coding-agent": ">=0.72.1",
-    "@mariozechner/pi-tui": ">=0.72.1",
+    "@earendil-works/pi-agent-core": ">=0.78.0",
+    "@earendil-works/pi-ai": ">=0.78.0",
+    "@earendil-works/pi-coding-agent": ">=0.78.0",
+    "@earendil-works/pi-tui": ">=0.78.0",
     "zod": ">=4.0.0"
   },
   "devDependencies": {
@@ -61,6 +61,7 @@
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "@sero-ai/common": "file:../../sero/packages/common"
   }
 }
