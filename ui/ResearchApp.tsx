@@ -25,9 +25,11 @@ const CUSTOM_STYLES = `
     --rs-text: #e8e4df;
     --rs-muted: #8b8d97;
     --rs-dim: #5c5e6a;
-    --rs-accent: #818cf8;
-    --rs-accent-hover: #a5b4fc;
-    --rs-accent-glow: rgba(129, 140, 248, 0.12);
+    --rs-accent: var(--brand-primary, #34d399);
+    --rs-accent-hover: var(--brand-primary-hover, #6ee7b7);
+    --rs-accent-foreground: var(--brand-primary-foreground, #052e1c);
+    --rs-accent-glow: var(--brand-primary-muted, rgba(52, 211, 153, 0.12));
+    --rs-accent-border: var(--brand-primary-border, rgba(52, 211, 153, 0.2));
     --rs-success: #34d399;
     --rs-warning: #fbbf24;
     --rs-danger: #f87171;
@@ -66,7 +68,7 @@ const CUSTOM_STYLES = `
 
   .rs-button { border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .rs-button:disabled { opacity: 0.35; cursor: default; }
-  .rs-button.primary { background: var(--rs-accent); color: #fff; }
+  .rs-button.primary { background: var(--rs-accent); color: var(--rs-accent-foreground); }
   .rs-button.primary:hover:not(:disabled) { background: var(--rs-accent-hover); box-shadow: 0 0 20px var(--rs-accent-glow); }
   .rs-button.secondary { background: var(--rs-bg-elevated); color: var(--rs-muted); }
   .rs-button.secondary:hover:not(:disabled) { color: var(--rs-text); }
@@ -351,7 +353,7 @@ function SynthesisCard() {
 function PhaseBadge({ phase }: { phase: string }) {
   const config: Record<string, { label: string; bg: string; color: string }> = {
     idle: { label: 'Idle', bg: 'var(--rs-bg-elevated)', color: 'var(--rs-dim)' },
-    planning: { label: 'Planning', bg: 'rgba(129, 140, 248, 0.12)', color: 'var(--rs-accent)' },
+    planning: { label: 'Planning', bg: 'var(--rs-accent-glow)', color: 'var(--rs-accent)' },
     awaiting_approval: { label: 'Awaiting Approval', bg: 'rgba(251, 191, 36, 0.12)', color: 'var(--rs-warning)' },
     researching: { label: 'Researching', bg: 'rgba(52, 211, 153, 0.12)', color: 'var(--rs-success)' },
     synthesizing: { label: 'Synthesizing', bg: 'rgba(251, 191, 36, 0.12)', color: 'var(--rs-warning)' },

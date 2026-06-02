@@ -87,7 +87,7 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
         cursor: 'pointer',
         transition: 'all 0.15s',
         background: active ? 'var(--rs-accent)' : 'transparent',
-        color: active ? '#fff' : 'var(--rs-muted)',
+        color: active ? 'var(--rs-accent-foreground)' : 'var(--rs-muted)',
       }}
     >
       {children}
@@ -183,7 +183,7 @@ function HistorySection({ history }: { history: ResearchHistoryEntry[] }) {
         <div key={i} style={{ fontSize: 13, color: 'var(--rs-muted)', padding: '6px 0', borderBottom: i < Math.min(history.length, 5) - 1 ? '1px solid var(--rs-border)' : 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--rs-text)', fontWeight: 400 }}>
             {entry.mode === 'article' && (
-              <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'rgba(129, 140, 248, 0.12)', color: 'var(--rs-accent)', fontWeight: 600 }}>
+              <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'var(--rs-accent-glow)', color: 'var(--rs-accent)', fontWeight: 600 }}>
                 ARTICLE
               </span>
             )}

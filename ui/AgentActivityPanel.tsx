@@ -54,8 +54,8 @@ export function AgentActivityPanel({ activity }: AgentActivityPanelProps) {
   return (
     <div style={{
       borderRadius: 6,
-      border: `1px solid ${isFailed ? 'rgba(248, 113, 113, 0.2)' : 'rgba(129, 140, 248, 0.15)'}`,
-      background: isFailed ? 'rgba(248, 113, 113, 0.04)' : 'rgba(129, 140, 248, 0.04)',
+      border: `1px solid ${isFailed ? 'rgba(248, 113, 113, 0.2)' : 'var(--rs-accent-border)'}`,
+      background: isFailed ? 'rgba(248, 113, 113, 0.04)' : 'var(--rs-accent-glow)',
       overflow: 'hidden',
       marginTop: 6,
     }}>
