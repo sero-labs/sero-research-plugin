@@ -2,6 +2,7 @@
   "name": "@sero-ai/plugin-research",
   "version": "0.1.1",
   "description": "Multi-agent research orchestrator for Sero — decompose questions into parallel workstreams, monitor progress, and synthesize results",
+  "type": "module",
   "keywords": [
     "pi-package"
   ],
