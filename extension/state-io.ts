@@ -16,7 +16,16 @@ export function resolveStatePath(cwd: string): string {
 export async function readState(filePath: string): Promise<ResearchState> {
   try {
     const raw = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(raw) as ResearchState;
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return { ...DEFAULT_STATE, history: [] };
+    }
+
+    const state = parsed as Partial<ResearchState>;
+    return {
+      current: state.current ?? null,
+      history: Array.isArray(state.history) ? state.history : [],
+    };
   } catch {
     return { ...DEFAULT_STATE, history: [] };
   }
