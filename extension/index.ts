@@ -15,6 +15,7 @@ import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { Text } from '@earendil-works/pi-tui';
 import { Type } from 'typebox';
 
+import { withStateLock } from '@sero-ai/extension-runtime';
 import type { ResearchState, ResearchSession, ResearchAgent, ResearchPhase } from '../shared/types';
 import { DEFAULT_STATE } from '../shared/types';
 import { resolveStatePath, readState, writeState, countLines, readFile, writeSkeletonFile, reconcileState } from './state-io';
@@ -94,22 +95,27 @@ export default function researchExtension(pi: ExtensionAPI): void {
       if (!statePath) {
         return makeResult('Error: no workspace cwd set', true);
       }
-      const state = await readState(statePath);
+      // Every action can write state.json; read AND write under the shared
+      // `<stateFile>.lock` mutex so a tool call cannot interleave with the
+      // Sero host writing the same file for the UI (#428).
+      return withStateLock(statePath, async () => {
+        const state = await readState(statePath);
 
-      switch (params.action) {
-        case 'plan':
-          return handlePlan(state, params);
-        case 'analyze':
-          return handleAnalyze(state, params);
-        case 'approve':
-          return handleApprove(state);
-        case 'status':
-          return handleStatus(state);
-        case 'cancel':
-          return handleCancel(state);
-        default:
-          return makeResult(`Unknown action: ${params.action}`, true);
-      }
+        switch (params.action) {
+          case 'plan':
+            return handlePlan(state, params);
+          case 'analyze':
+            return handleAnalyze(state, params);
+          case 'approve':
+            return handleApprove(state);
+          case 'status':
+            return handleStatus(state);
+          case 'cancel':
+            return handleCancel(state);
+          default:
+            return makeResult(`Unknown action: ${params.action}`, true);
+        }
+      });
     },
 
     renderCall(args, theme) {
@@ -425,28 +431,31 @@ export default function researchExtension(pi: ExtensionAPI): void {
     ensureStatePath(ctx);
     if (!statePath) return;
 
-    const state = await readState(statePath);
-    if (!state.current || state.current.phase !== 'synthesizing') return;
+    // Read-modify-write under the shared `<stateFile>.lock` mutex (#428).
+    await withStateLock(statePath, async () => {
+      const state = await readState(statePath);
+      if (!state.current || state.current.phase !== 'synthesizing') return;
 
-    const session = state.current;
-    const synthPath = path.join(workspaceCwd, session.outputDir, 'synthesis.md');
-    const content = await readFile(synthPath);
+      const session = state.current;
+      const synthPath = path.join(workspaceCwd, session.outputDir, 'synthesis.md');
+      const content = await readFile(synthPath);
 
-    if (content.includes('Status: COMPLETE')) {
-      session.phase = 'complete';
-      session.completedAt = new Date().toISOString();
-      session.synthesisFile = path.join(session.outputDir, 'synthesis.md');
+      if (content.includes('Status: COMPLETE')) {
+        session.phase = 'complete';
+        session.completedAt = new Date().toISOString();
+        session.synthesisFile = path.join(session.outputDir, 'synthesis.md');
 
-      state.history.unshift({
-        question: session.question,
-        mode: session.mode,
-        outputDir: session.outputDir,
-        agentCount: session.agents.length,
-        completedAt: session.completedAt,
-      });
-      state.current = null;
-      await syncState(state);
-    }
+        state.history.unshift({
+          question: session.question,
+          mode: session.mode,
+          outputDir: session.outputDir,
+          agentCount: session.agents.length,
+          completedAt: session.completedAt,
+        });
+        state.current = null;
+        await syncState(state);
+      }
+    });
   });
 
   // ── Event: reconcile persisted state on session start ──────
@@ -460,11 +469,14 @@ export default function researchExtension(pi: ExtensionAPI): void {
     ensureStatePath(ctx);
     if (!statePath || !workspaceCwd) return;
 
-    const state = await readState(statePath);
-    const changed = await reconcileState(state, workspaceCwd);
-    if (changed) {
-      await syncState(state);
-    }
+    // Read-modify-write under the shared `<stateFile>.lock` mutex (#428).
+    await withStateLock(statePath, async () => {
+      const state = await readState(statePath);
+      const changed = await reconcileState(state, workspaceCwd);
+      if (changed) {
+        await syncState(state);
+      }
+    });
   }
 
   pi.on('session_start', async (_event, ctx) => {
