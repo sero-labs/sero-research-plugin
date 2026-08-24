@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sero-ai/extension-runtime':
-        specifier: ^0.2.0
-        version: 0.2.0(@earendil-works/pi-agent-core@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-ai@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-coding-agent@0.83.0(ws@8.21.0)(zod@4.4.3))
+        specifier: ^0.2.2
+        version: 0.2.2(@earendil-works/pi-agent-core@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-ai@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-coding-agent@0.83.0(ws@8.21.0)(zod@4.4.3))
       typebox:
         specifier: ^1.1.37
         version: 1.1.39
@@ -755,12 +755,19 @@ packages:
     peerDependencies:
       '@earendil-works/pi-agent-core': '>=0.83.0'
 
-  '@sero-ai/extension-runtime@0.2.0':
-    resolution: {integrity: sha512-TFjB1PCmKxFVHAHUsTrbMwQ2zT7XYK5FeFsZ8Gi1Ord4mtBuX1B/5bPsQQeBvXNuhdQwkLwRyhw9xkcStyFFCA==}
+  '@sero-ai/extension-runtime@0.2.2':
+    resolution: {integrity: sha512-OUIhfWpnZoLk13dHI7gnphrHB8L5et7M2LD5EsINC0c7rwrljJ2x7Ou0m4A30BiZLch9uXpE4d6H6rRi2mYCWA==}
     peerDependencies:
-      '@earendil-works/pi-agent-core': '>=0.84.2'
-      '@earendil-works/pi-ai': '>=0.84.2'
-      '@earendil-works/pi-coding-agent': '>=0.84.2'
+      '@earendil-works/pi-agent-core': '>=0.83.0'
+      '@earendil-works/pi-ai': '>=0.83.0'
+      '@earendil-works/pi-coding-agent': '>=0.83.0'
+    peerDependenciesMeta:
+      '@earendil-works/pi-agent-core':
+        optional: true
+      '@earendil-works/pi-ai':
+        optional: true
+      '@earendil-works/pi-coding-agent':
+        optional: true
 
   '@sero-ai/plugin-vite@0.1.1':
     resolution: {integrity: sha512-tRKwLpTWsmlDokMkQVdqyRehT8xyiQvenl8NIjGhxjgzGlqUaDBPNwqFTMo2XdP58erVuTW+mVl/JPU2Y3oWcQ==}
@@ -2255,8 +2262,8 @@ snapshots:
     dependencies:
       '@earendil-works/pi-agent-core': 0.83.0(ws@8.21.0)(zod@4.4.3)
 
-  '@sero-ai/extension-runtime@0.2.0(@earendil-works/pi-agent-core@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-ai@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-coding-agent@0.83.0(ws@8.21.0)(zod@4.4.3))':
-    dependencies:
+  '@sero-ai/extension-runtime@0.2.2(@earendil-works/pi-agent-core@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-ai@0.83.0(ws@8.21.0)(zod@4.4.3))(@earendil-works/pi-coding-agent@0.83.0(ws@8.21.0)(zod@4.4.3))':
+    optionalDependencies:
       '@earendil-works/pi-agent-core': 0.83.0(ws@8.21.0)(zod@4.4.3)
       '@earendil-works/pi-ai': 0.83.0(ws@8.21.0)(zod@4.4.3)
       '@earendil-works/pi-coding-agent': 0.83.0(ws@8.21.0)(zod@4.4.3)
