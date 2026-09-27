@@ -464,10 +464,17 @@ export default function researchExtension(pi: ExtensionAPI): void {
   // state file may still say phase='researching' with agents 'running'.
   // reconcileState checks the actual output files on disk and finalizes any
   // sessions that are already done, or marks interrupted agents as failed.
+  //
+  // This runs once per workspace per app run. Every session loads this
+  // extension, research agents included, so a later session_start would mark
+  // agents that are still running as failed.
 
   async function reconcileOnStart(ctx?: { cwd?: string }): Promise<void> {
     ensureStatePath(ctx);
     if (!statePath || !workspaceCwd) return;
+    const reconciled = reconciledWorkspaces();
+    if (reconciled.has(statePath)) return;
+    reconciled.add(statePath);
 
     // Read-modify-write under the shared `<stateFile>.lock` mutex (#428).
     await withStateLock(statePath, async () => {
@@ -493,6 +500,14 @@ export default function researchExtension(pi: ExtensionAPI): void {
 }
 
 // ── Utils ──────────────────────────────────────────────────────
+
+/** State files already reconciled in this app run, shared by every extension copy. */
+function reconciledWorkspaces(): Set<string> {
+  const key = Symbol.for('@sero-ai/plugin-research/reconciled');
+  const store = globalThis as typeof globalThis & { [key: symbol]: Set<string> | undefined };
+  store[key] ??= new Set();
+  return store[key];
+}
 
 function statusIcon(status: string): string {
   switch (status) {
